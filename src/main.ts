@@ -9,8 +9,11 @@ import Camera from './Camera';
 import {setGL} from './globals';
 import ShaderProgram, {Shader} from './rendering/gl/ShaderProgram';
 
-import lambertVertSource from './shaders/lambert-vert.glsl?raw';
-import lambertFragSource from './shaders/lambert-frag.glsl?raw';
+// import lambertVertSource from './shaders/lambert-vert.glsl?raw';
+// import lambertFragSource from './shaders/lambert-frag.glsl?raw';
+
+import customVertSource from './shaders/custom-vert.glsl?raw';
+import customFragSource from './shaders/custom-frag.glsl?raw';
 
 // Define an object with application parameters and button callbacks
 // This will be referred to by dat.GUI's functions that add GUI elements.
@@ -68,13 +71,23 @@ function main() {
   renderer.setClearColor(0.2, 0.2, 0.2, 1);
   gl.enable(gl.DEPTH_TEST);
 
-  const lambert = new ShaderProgram([
-    new Shader(gl.VERTEX_SHADER, lambertVertSource),
-    new Shader(gl.FRAGMENT_SHADER, lambertFragSource),
+  // const lambert = new ShaderProgram([
+  //   new Shader(gl.VERTEX_SHADER, lambertVertSource),
+  //   new Shader(gl.FRAGMENT_SHADER, lambertFragSource),
+  // ]);
+
+  const customShader = new ShaderProgram([
+    new Shader(gl.VERTEX_SHADER, customVertSource),
+    new Shader(gl.FRAGMENT_SHADER, customFragSource),
   ]);
+
+  const startTime = performance.now();
 
   // This function will be called every frame
   function tick() {
+    const currentTime = (performance.now() - startTime)/1000.0;
+    customShader.setTime(currentTime);
+
     camera.update();
     stats.begin();
     gl.viewport(0, 0, window.innerWidth, window.innerHeight);
@@ -91,7 +104,7 @@ function main() {
     controls.color[2] / 255.0,
     1.0
   );
-    renderer.render(camera, lambert, [
+    renderer.render(camera, customShader, [
       // icosphere,
       // square,
       cube,

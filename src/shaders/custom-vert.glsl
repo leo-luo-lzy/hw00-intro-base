@@ -18,6 +18,7 @@ out vec4 fs_Nor;
 out vec4 fs_LightVec;
 out vec4 fs_Col;
 out vec4 fs_Pos;
+out vec3 fs_WorldPos;
 
 const vec4 lightPos = vec4(5, 5, 3, 1);
 
@@ -33,12 +34,19 @@ void main()
     vec3 orig = vec3(0.0, -1.0, 0.0);
     vec3 newPos = orig + (vs_Pos.xyz - orig) * scale;
 
+    float angle =  0.45*sin(u_Time*2.0)*(vs_Pos.y+1.0);
+    float c = cos(angle);
+    float s = sin(angle);
+
+    newPos.xz = vec2(c*newPos.x - s*newPos.z, s*newPos.x + c*newPos.z);
+
     vec3 newNor = vs_Nor.xyz / scale;
 
     mat3 invTranspose = mat3(u_ModelInvTr);
     fs_Nor = vec4(invTranspose * vec3(newNor), 0);
 
     vec4 modelposition = u_Model * vec4(newPos, 1.0);
+    fs_WorldPos = modelposition.xyz;
     fs_LightVec = lightPos - modelposition;
     gl_Position = u_ViewProj * modelposition;
 }

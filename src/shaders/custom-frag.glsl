@@ -8,6 +8,7 @@ in vec4 fs_Nor;
 in vec4 fs_LightVec;
 in vec4 fs_Col;
 in vec4 fs_Pos;
+in vec3 fs_WorldPos;
 
 out vec4 out_Col;
 
@@ -86,7 +87,16 @@ void main()
         pattern
     );
 
-    float diffuseTerm = max(dot(normalize(fs_Nor.xyz),normalize(fs_LightVec.xyz)),0.0);
+    vec3 N = normalize(cross(dFdx(fs_WorldPos), dFdy(fs_WorldPos)));
+
+    if(!gl_FrontFacing)
+    {
+        N = -N;
+    }
+
+    vec3 L = normalize(fs_LightVec.xyz);
+
+    float diffuseTerm = max(dot(N, L), 0.0);
 
     float ambientTerm = 0.2;
 

@@ -1,3 +1,23 @@
+## Zhiyao Luo's Results
+
+**Name:** Zhiyao Luo  
+**PennKey:** leoluozy  
+**Live demo**: https://leo-luo-lzy.github.io/hw00-intro-base/  
+
+### Final Result
+![](Result/1.png)
+*Perlin noise pattern on the cube.*
+
+![](Result/2.png)
+*Cube twisting over time.*
+
+![](Result/3.png)
+*Non-uniform scaling with a different mesh color.*
+
+In this assignment, I added a custom cube to the scene and wrote my own vertex and fragment shaders. The fragment shader uses 3D Perlin noise to create the pattern on the cube. The vertex shader makes the cube stretch, squash, and twist over time. I also added a color picker in the GUI so the cube color can be changed interactively.
+
+---
+
 # HW 0: Intro to Javascript and WebGL
 
 <p align="center">

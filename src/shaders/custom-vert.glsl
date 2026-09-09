@@ -14,7 +14,6 @@ in vec4 vs_Nor;
 
 in vec4 vs_Col;
 
-out vec4 fs_Nor;
 out vec4 fs_LightVec;
 out vec4 fs_Col;
 out vec4 fs_Pos;
@@ -39,11 +38,6 @@ void main()
     float s = sin(angle);
 
     newPos.xz = vec2(c*newPos.x - s*newPos.z, s*newPos.x + c*newPos.z);
-
-    vec3 newNor = vs_Nor.xyz / scale;
-
-    mat3 invTranspose = mat3(u_ModelInvTr);
-    fs_Nor = vec4(invTranspose * vec3(newNor), 0);
 
     vec4 modelposition = u_Model * vec4(newPos, 1.0);
     fs_WorldPos = modelposition.xyz;

@@ -3,6 +3,7 @@
 precision highp float;
 
 uniform vec4 u_Color;
+uniform float u_Time;
 
 in vec4 fs_LightVec;
 in vec4 fs_Col;
@@ -72,19 +73,19 @@ float perlin3D(vec3 p)
 
 void main()
 {
-    float noiseValue = perlin3D(fs_Pos.xyz * 5.0);
+    vec3 move = vec3(0.35, 0.55, 0.45) * u_Time*0.8;
+    float noiseValue = perlin3D(fs_Pos.xyz * 5.0+ move);
 
     float pattern = clamp(0.5 + 0.5 * noiseValue, 0.0, 1.0);
-    pattern = smoothstep(0.4, 0.6, pattern);
+    pattern = smoothstep(0.2, 0.8, pattern);
+    pattern = pow(pattern, 1.5);
 
-    vec3 darkColor = u_Color.rgb * 0.15;
-    vec3 lightColor = u_Color.rgb;
+    vec3 darkColor = u_Color.rgb * 0.06;
+    vec3 midColor = u_Color.rgb;
+    vec3 lightColor = mix(u_Color.rgb, vec3(1.0), 0.8);
 
-    vec3 diffuseColor = mix(
-        darkColor,
-        lightColor,
-        pattern
-    );
+    vec3 diffuseColor = mix(darkColor, midColor, smoothstep(0.05, 0.4, pattern));
+    diffuseColor = mix(diffuseColor, lightColor, smoothstep(0.6, 0.8, pattern));
 
     vec3 N = normalize(cross(dFdx(fs_WorldPos), dFdy(fs_WorldPos)));
 
@@ -97,7 +98,7 @@ void main()
 
     float diffuseTerm = max(dot(N, L), 0.0);
 
-    float ambientTerm = 0.2;
+    float ambientTerm = 0.4;
 
     float lightIntensity = ambientTerm + diffuseTerm;
 

@@ -26,14 +26,14 @@ void main()
     fs_Col = vs_Col;
     fs_Pos = vs_Pos;
 
-    float scaleY = 1.0 + 0.35 * sin(u_Time*3.0);
+    float scaleY = 1.0 + 0.35 * sin(u_Time*0.5);
     float scaleXZ = inversesqrt(scaleY);
     vec3 scale = vec3(scaleXZ, scaleY, scaleXZ);
 
     vec3 orig = vec3(0.0, -1.0, 0.0);
     vec3 newPos = orig + (vs_Pos.xyz - orig) * scale;
 
-    float angle =  0.45*sin(u_Time*2.0)*(vs_Pos.y+1.0);
+    float angle =  0.45*sin(u_Time*0.8)*(vs_Pos.y+1.0);
     float c = cos(angle);
     float s = sin(angle);
 
